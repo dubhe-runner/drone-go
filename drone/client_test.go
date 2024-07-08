@@ -245,7 +245,7 @@ func TestRepoListSync(t *testing.T) {
 	defer ts.Close()
 
 	client := New(ts.URL)
-	got, err := client.RepoListSync()
+	got, err := client.RepoListSync(true)
 	if err != nil {
 		t.Error(err)
 		return
@@ -681,9 +681,7 @@ func TestLogsPurge(t *testing.T) {
 	}
 }
 
-//
 // mock server and testdata.
-//
 func mockHandler(w http.ResponseWriter, r *http.Request) {
 	routes := []struct {
 		verb string
