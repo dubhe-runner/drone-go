@@ -88,6 +88,14 @@ func encodeListOptions(opts ListOptions) string {
 	return params.Encode()
 }
 
+func asyncOpt(hasAsync bool) string {
+	params := url.Values{}
+	if hasAsync {
+		params.Set("async", "true")
+	}
+	return params.Encode()
+}
+
 // New returns a client at the specified url.
 func New(uri string) Client {
 	return &client{http.DefaultClient, strings.TrimSuffix(uri, "/")}
@@ -190,9 +198,12 @@ func (c *client) RepoList() ([]*Repo, error) {
 
 // RepoListSync returns a list of all repositories to which
 // the user has explicit access in the host system.
-func (c *client) RepoListSync() ([]*Repo, error) {
+func (c *client) RepoListSync(hasAsync bool) ([]*Repo, error) {
 	var out []*Repo
 	uri := fmt.Sprintf(pathRepos, c.addr)
+	if hasAsync {
+		uri += "?" + asyncOpt(hasAsync)
+	}
 	err := c.post(uri, nil, &out)
 	return out, err
 }

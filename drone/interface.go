@@ -64,7 +64,7 @@ type Client interface {
 
 	// RepoListSync returns a list of all repositories to which
 	// the user has explicit access in the host system.
-	RepoListSync() ([]*Repo, error)
+	RepoListSync(hasAsync bool) ([]*Repo, error)
 
 	// RepoListAll returns a list of all repositories in
 	// the database. This is only available to system admins.
